@@ -1,2 +1,3 @@
-print "hello world"
-print "N world"
+helloWorld(" print something! " )
+helloWorld("print r")
+print("hello")

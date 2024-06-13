@@ -1,33 +1,58 @@
+def consolePrint(str_):
+    print(str_)
+
 def lexer(contents): 
     lines = contents.split("\n")
-    keywords = ["helloWorld"]
-    print(lines)
-
+    keywords = {
+        'helloWorld': consolePrint
+    }
+   
+    code = []
     for line in lines:
         
+        sentence = []
+        word = ""
+        str_start = False
+        str_ = ""
         if "'" in line or '"' in line:
-            sentence = []
-            for i in range(36):
-                word = ""
-                end_line = False
-                if end_line:
-                    break
-
-                for letter in line:
-                    if letter == line[-1]:
-                        end_line = True
-                    elif letter == " ":
-                        break
+            for letter in line:
+                if str_start:
+                    if letter in ["'", '"']:
+                        str_start = False
+                        sentence.append(str_)
+                        
                     else:
-                        word +=letter
-                x =line.replace(word, "")
-                print(x)
+                        str_ += letter
+                else:
+                    if letter in ["'", '"']:
+                        if word:
+                            sentence.append(word)
+                            word = ""
+                        str_start = True
+                    elif letter in ["(", ")", " "]:
+                        if word:
+                            sentence.append(word)
+                            word = ""
+
+                    else:
+                        word += letter
+
+            if word:
                 sentence.append(word)
-            print(sentence)               
+            
+        else:
+            sentence.append(line.split())
+        for word_ in sentence:
+            if word_ in keywords:
+                function_ = keywords[word_]
+                function_(str_)
+            
+        code.append(sentence)
+  
+    
+            
 
                 
-   
-        
 
         
        
