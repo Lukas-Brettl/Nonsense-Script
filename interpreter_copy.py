@@ -15,6 +15,7 @@ keywords = ["helloWorld"]
 
 def lexer(contents): 
     lines = contents.split("\n")
+    
     sentence = []
     word = ""
     numLine = 1
@@ -38,9 +39,14 @@ def lexer(contents):
                 object_["line" + str(numLine)][word] = {"type": "undefinited",}
                 sentence.append(word)
                 word=""
+            elif letter == line[-1]:
+                word += letter
+                sentence.append(word)
+                object_["line" + str(numLine)][word] = {"type": "undefinited",}
+                word = ""
             else:
                 word += letter
-        
+            
         print(sentence)
 
         startSting = ""
@@ -72,8 +78,7 @@ def lexer(contents):
                 rightCall = editSentence.index(")")
 
                 valueRange = editSentence[leftCall + 1:rightCall]
-                print(valueRange)
-                callFunction = False
+
                 for value in valueRange:
                     if value in [" ", ",", "'", '"']:
                         continue        

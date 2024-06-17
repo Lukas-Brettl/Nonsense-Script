@@ -1,5 +1,5 @@
+print prom + 9
+helloWorld(1+10)
 
-helloWorld('1')
-helloWorld(' (print r')
-print("necio")
+helloWorld(prom)
 
