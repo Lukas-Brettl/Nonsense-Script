@@ -21,7 +21,7 @@ def lexer(contents):
     for line in lines:
         object_["line" + str(numLine)] = {}
         for letter in line:
-            if letter in ["(", ")", '"', "'"] and word:
+            if letter in ["(", ")", '"', "'", ","] and word:
                 if word in keywords:
                     object_["line" + str(numLine)][word] = keywordsObject_[word]
                     sentence.append(word)
@@ -33,7 +33,7 @@ def lexer(contents):
                 object_["line" + str(numLine)][word] = {"type": "undefinited",}
                 sentence.append(word)
                 word = ""
-            elif letter in ["(", ")", '"', "'"] and not word:
+            elif letter in ["(", ")", '"', "'", ","] and not word:
                 word += letter
                 object_["line" + str(numLine)][word] = {"type": "undefinited",}
                 sentence.append(word)
@@ -72,9 +72,14 @@ def lexer(contents):
                 rightCall = editSentence.index(")")
 
                 valueRange = editSentence[leftCall + 1:rightCall]
+                print(valueRange)
+                callFunction = False
                 for value in valueRange:
-                    pass
-                callFunction = object_["line" + str(numLine)][i]["todo"]
+                    if value in [" ", ",", "'", '"']:
+                        continue        
+                    else:
+                        printToConsole(value)
+                
                 
         numLine += 1
         sentence.clear()
