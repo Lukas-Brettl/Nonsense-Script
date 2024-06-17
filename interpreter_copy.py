@@ -46,7 +46,8 @@ def lexer(contents):
                 word = ""
             else:
                 word += letter
-            
+        
+
         print(sentence)
 
         startSting = ""
@@ -78,7 +79,6 @@ def lexer(contents):
                 rightCall = editSentence.index(")")
 
                 valueRange = editSentence[leftCall + 1:rightCall]
-
                 for value in valueRange:
                     if value in [" ", ",", "'", '"']:
                         continue        
