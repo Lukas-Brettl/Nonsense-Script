@@ -1,3 +1,4 @@
+import functions
 def printToConsole(toPrint):
     print(toPrint)
 
@@ -62,26 +63,19 @@ def lexer(contents):
         startSting = ""
         endString = ""
         
-        
-        if "'" in sentence:
+        f = functions.Functions()
+        if "'" in sentence or '"' in sentence:
+            stringsIndex = f.getIndexs(sentence, ["'", '"'])
 
-            for i, element in enumerate(sentence):
-                if element == "'" and not startSting:
-                    startSting = i
-                elif element == "'" and startSting:
-                    endString = i
 
-        elif '"' in sentence:
-            for i, element in enumerate(sentence):
-                if element == '"' and not startSting:
-                    startSting = i
-                elif element == '"' and startSting:
-                    endString = i
-        
-        if startSting and endString:
-            for i in range(startSting + 1, endString):
-                
-                object_["line" + str(numLine)][str(numLine) + str(i)]["type"] = "string"
+            trueI = 0
+            if len(stringsIndex) % 2 == 0:
+                for i in range(int((len(stringsIndex)/2))):
+                    object_["line" + str(numLine)][str(numLine) + str(stringsIndex[trueI] + 1)]["type"] = "string"
+                    trueI +=2
+            elif len(stringsIndex) % 2 == 1:
+                print("Error on line" + numLine)
+                exit()
         for printt in sentence:
             if "print" in printt and object_["line" + str(numLine)][str(numLine) + str(sentence.index(printt) + 1)]["type"] == "undefinited":
                 
@@ -111,7 +105,8 @@ def lexer(contents):
                         var += i
             
         for i in sentence:
-            try:
+            
+            if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]:
                 if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "buildInFunction":
                     
                     functionIndex = sentence.index(i)
@@ -129,10 +124,11 @@ def lexer(contents):
                             valueType = ""
                             adressRange = len(sentence)
                             for i in range(adressRange + 1):
+                                
                                 try:
-                                    if object_["line" + numLine][str(numLine + i)]["type"] == "variable":
+                                    if object_["line" + str(numLine)][str(numLine) + str(i)]["type"] == "variable":
                                         valueType = "variable"
-                                        print("lll")
+                                        print("lllkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
                                 except:
                                     pass
                             for key, thelines in object_.items():
@@ -146,8 +142,7 @@ def lexer(contents):
                 elif object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "keywordVariable":
                     functionIndex = sentence.index(i)
                     editSentence = sentence[functionIndex + 1:]
-            except:
-                pass
+
         
         numLine += 1
         sentence.clear()
