@@ -1,6 +1,4 @@
 import functions
-def printToConsole(toPrint):
-    print(toPrint)
 
 object_ = {}
 
@@ -8,7 +6,7 @@ keywordsObject_ = {
     "helloWorld": {
         "type": "buildInFunction",
         "codeValue": "helloWorld",
-        "todo": printToConsole,
+        "todo": "printToConsole",
         "discription": "function to print something to terminal"
     },
     "print": {
@@ -27,11 +25,15 @@ def lexer(contents):
     
     word = ""
     numLine = 1
+
+    #algorithm to split key words
     for line in lines:
         object_["line" + str(numLine)] = {}
         
+        #for exery letter in line
         for letter in line:
 
+            #if letter in key word and is something in word then add word and the letter to sentence
             if letter in ["(", ")", '"', "'", ","] and word:
                 if word in keywords:
                     object_["line" + str(numLine)][str(numLine) + str(len(sentence))] = keywordsObject_[word]
@@ -45,25 +47,32 @@ def lexer(contents):
                 object_["line" + str(numLine)][str(numLine) + str(len(sentence))] = {"type": "undefinited", "codeValue": word}
                 sentence.append(word)
                 word = ""
+            #if letter in key word and it's nothing in word then add letter to word and then add word to sentence
             elif letter in ["(", ")", '"', "'", ","] and not word:
                 word += letter
                 object_["line" + str(numLine)][str(numLine) + str(len(sentence))] = {"type": "undefinited", "codeValue": word}
                 sentence.append(word)
                 word=""
+
+            #if last letter in line add to word and then word add to sentence
             elif letter == line[-1]:
                 word += letter
                 sentence.append(word)
                 object_["line" + str(numLine)][str(numLine) + str(len(sentence))] = {"type": "undefinited", "codeValue": word}
                 word = ""
+            #if nothing else work add letter to word
             else:
                 word += letter
 
-        
+        #print split sentence
         print(sentence)
         startSting = ""
         endString = ""
         
+        #call imported modul
         f = functions.Functions()
+
+        #if ' or " in sentence 
         if "'" in sentence or '"' in sentence:
             stringsIndex = f.getIndexs(sentence, ["'", '"'])
 
@@ -105,43 +114,28 @@ def lexer(contents):
                         var += i
             
         for i in sentence:
-            
-            if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]:
-                if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "buildInFunction":
-                    
-                    functionIndex = sentence.index(i)
-                    editSentence = sentence[functionIndex + 1:]
-                    leftCall = editSentence.index("(")
-                    rightCall = editSentence.index(")")
-
-                    valueRange = editSentence[leftCall + 1:rightCall]
-
-                    for value in valueRange:
-                        if value in [" ", ",", "'", '"']:
-                            continue        
-                        else:
-                            isPrinted = False
-                            valueType = ""
-                            adressRange = len(sentence)
-                            for i in range(adressRange + 1):
-                                
-                                try:
-                                    if object_["line" + str(numLine)][str(numLine) + str(i)]["type"] == "variable":
-                                        valueType = "variable"
-                                        print("lllkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
-                                except:
-                                    pass
-                            for key, thelines in object_.items():
-                                for keyadress, adress in thelines.items():
-                                    if valueType == "variable"  and adress["equalTo"] and adress["type"] == "variable":
-                                        printToConsole(adress["equalTo"])
-                                        isPrinted = not isPrinted
-                                        continue
-                            if isPrinted:
-                                printToConsole(value)
-                elif object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "keywordVariable":
-                    functionIndex = sentence.index(i)
-                    editSentence = sentence[functionIndex + 1:]
+            functionIndex = sentence.index(i)
+            editSentence = sentence[functionIndex + 1:]
+            try: 
+                if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]:
+                    if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "buildInFunction":
+                        print("nice")
+                        f.buildFunction(sentence, object_, numLine, editSentence)
+                    elif object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "keywordVariable":
+                        functionIndex = sentence.index(i)
+                        editSentence = sentence[functionIndex + 1:]
+            except:
+                pass
+            try:
+                if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i) + 1)]:
+                    if object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "buildInFunction":
+                        print("nice")
+                        f.buildFunction(sentence, object_, numLine, editSentence)
+                    elif object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "keywordVariable":
+                        functionIndex = sentence.index(i)
+                        editSentence = sentence[functionIndex + 1:]
+            except:
+                pass
 
         
         numLine += 1
