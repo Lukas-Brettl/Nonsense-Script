@@ -28,6 +28,7 @@ def lexer(contents):
     
     word = ""
     numLine = 1
+#algorithm to split line with key words
     for line in lines:
         object_["line" + str(numLine)] = {}
         
