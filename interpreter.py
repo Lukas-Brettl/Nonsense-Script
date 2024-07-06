@@ -17,6 +17,8 @@ keywordsObject_ = {
     },
 }
 
+varList = {}
+
 keywords = ["helloWorld", "print"]
 
 def lexer(contents): 
@@ -106,7 +108,8 @@ def lexer(contents):
                             "equalTo": varResult,
                             "discription": "This is variable"
                         }
-                        print(object_["line" + str(numLine)][str(numLine) + str(sentence.index(printt) + 1)]["equalTo"])
+                        varList[str(var)] = varResult
+                        
                     else:
                         var += i
             
@@ -122,6 +125,12 @@ def lexer(contents):
                     valueRange = editSentence[leftCall + 1:rightCall]
 
                     for value in valueRange:
+                        if object_["line" + str(numLine)][str(numLine) + str(sentence.index(value))]["type"] == "string":
+                            printToConsole(str(value))
+                        elif object_["line" + str(numLine)][str(numLine) + str(sentence.index(value))]["type"] == "undefinited" and value in varList:
+                            
+                            printToConsole(varList[value])
+                    '''for value in valueRange:
                         if value in [" ", ",", "'", '"']:
                             continue        
                         else:
@@ -145,7 +154,7 @@ def lexer(contents):
                                 printToConsole(value)
                 elif object_["line" + str(numLine)][str(numLine) + str(sentence.index(i))]["type"] == "keywordVariable":
                     functionIndex = sentence.index(i)
-                    editSentence = sentence[functionIndex + 1:]
+                    editSentence = sentence[functionIndex + 1:]'''
             except:
                 pass
         
